@@ -56,9 +56,6 @@
     <ClCompile Include="src\components\Sprite.cpp">
       <Filter>src\components</Filter>
     </ClCompile>
-    <ClCompile Include="src\HUD\ImGuiHUD.cpp">
-      <Filter>src\HUD</Filter>
-    </ClCompile>
     <ClCompile Include="libs\Box2D\Box2D\Rope\b2Rope.cpp">
       <Filter>libs\Box2D\Rope</Filter>
     </ClCompile>
@@ -211,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="src\utils\types.cpp">
       <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HUD\ImGuiHUD.cpp">
+      <Filter>src\HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -37,6 +37,8 @@ public:
 
 	void close();
 
+	bool ProjectAlreadyExists(const std::string & project_name, const std::string & projects_path);
+
 	void ShowMenubarMenuProject();
 
 	void UpdateCurrentWindowRectData(ImGuiWindowRect* window_rect);

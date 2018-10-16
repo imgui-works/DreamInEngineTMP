@@ -1,5 +1,7 @@
 #pragma once
 #include "utils/filesystem.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_internal.h"
 
 enum PopupStatus
 {

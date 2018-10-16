@@ -123,6 +123,7 @@ public:
 			}
 		}
 	}
+
 private:
 	// Scene data
 	std::string m_name;
