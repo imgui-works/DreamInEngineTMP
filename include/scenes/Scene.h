@@ -11,8 +11,6 @@
 #include <components/BoxPhysics.h>
 #include <entities/Entity.h>
 #include <utils/ComponentStore.h>
-#include <systems/BoxPhysicsSystem.h>
-#include <systems/InputSystem.h>
 #include <components/Sprite.h>
 #include <components/Input.h>
 #include <utils/InputEnum.h>
@@ -21,13 +19,22 @@
 #include <events/Events.h>
 #include <events/EventSubscriber.h>
 
+template<typename T>
+TypeIndex getTypeIndex()
+{
+	return std::type_index(typeid(T));
+}
+
 class SceneManager;
+
+// WARN: ONLY CALL System (predefine) in .h -> Implementation in .cpp 'cause not polymorphic use needed from scene
+class System;
 
 class Scene {
 public:
-	Scene(SceneManager *sceneManager, const std::string &sceneName);
+	Scene(SceneManager *sceneManager, std::string sceneName);
 
-	void update(std::vector<InputEnum> inputs);
+	void update();
 
 	void render();
 
@@ -37,19 +44,19 @@ public:
 
 	void add_input(Entity *entity);
 
-	void setName(std::string name) { m_name = name; }
+	void setName(std::string name);
 
-	std::string getName() const { return m_name; }
+	std::string getName() const;
 
-	b2World* getWorld() const { return m_world; }
+	b2World* getWorld() const;
 
-	ComponentStore<Entity>& getEntities() { return m_entities; }
+	ComponentStore<Entity>& getEntities();
 
-	ComponentStore<Sprite>& getSprites() { return m_sprites; }
+	ComponentStore<Sprite>& getSprites();
 
-	ComponentStore<BoxPhysics>& getBoxPhysics() { return m_box_physique; }
+	ComponentStore<BoxPhysics>& getBoxPhysics();
 
-	ComponentStore<Input>& getInputs() { return m_inputs; }
+	ComponentStore<Input>& getInputs();
 
 	~Scene();
 
@@ -57,7 +64,7 @@ public:
 	* Subscribe to an event.
 	*/
 	template<typename T>
-	void subscribe(EventSubscriber<T>* subscriber)
+	inline void subscribe(EventSubscriber<T>* subscriber)
 	{
 		auto index = getTypeIndex<T>();
 		auto found = subscribers.find(index);
@@ -78,7 +85,7 @@ public:
 	* Unsubscribe from an event.
 	*/
 	template<typename T>
-	void unsubscribe(EventSubscriber<T>* subscriber)
+	inline void unsubscribe(EventSubscriber<T>* subscriber)
 	{
 		auto index = getTypeIndex<T>();
 		auto found = subscribers.find(index);
@@ -95,7 +102,7 @@ public:
 	/**
 	* Unsubscribe from all events. Don't be afraid of the void pointer, just pass in your subscriber as normal.
 	*/
-	void unsubscribeAll(void* subscriber)
+	inline void unsubscribeAll(void* subscriber)
 	{
 		for (auto kv : subscribers)
 		{
@@ -111,7 +118,7 @@ public:
 	* Emit an event. This will do nothing if there are no subscribers for the event type.
 	*/
 	template<typename T>
-	void emit(const T& event)
+	inline void emit(const T& event)
 	{
 		auto found = subscribers.find(getTypeIndex<T>());
 		if (found != subscribers.end())
@@ -124,15 +131,52 @@ public:
 		}
 	}
 
+	// TODO: Check if the specified type is derived from "System" (Base class)
+	/* System Management */
+	template<typename TSystem>
+	inline bool add_system()
+	{
+		// Find type index
+		const TypeIndex type_index_system = getTypeIndex<TSystem>();
+
+		// Check type existence
+		bool system_type_exists = false;
+		for(auto &system_type_iterator : m_system_types)
+		{
+			// System exists IF type found
+			if (system_type_iterator.first == type_index_system) system_type_exists = true;
+		}
+
+		// If type already (found) exists => System already exists => Error message
+		if(system_type_exists)
+		{
+			printf("Error: System Already Exists\n");
+			return false;
+		}
+
+		// System not exists => Create & Add system to system list
+		auto system = new TSystem(this);
+
+		
+		m_systems.push_back(system);
+		m_system_types[type_index_system] = m_systems.back(); // TODO: see if a double pointer is useful and/or better or not for non-copying the object => VERY IMPORTANT: DO TESTS about this case !!!!!!!!
+		return true;
+	}
+
+	template<typename TSystem>
+	inline TSystem *get_system()
+	{
+		// Find type index
+		return (TSystem*)m_system_types[getTypeIndex<TSystem>()];
+	}
+
 private:
 	// Scene data
-	std::string m_name;
 	SceneManager* m_sceneManager = nullptr;
+	std::string m_name;
 
 	// Box2D
 	b2World* m_world;
-	BoxPhysicsSystem m_box_physics_system;
-	InputSystem m_input_system;
 
 	// Scene entities
 	ComponentStore<Entity> m_entities;
@@ -143,6 +187,9 @@ private:
 
 	// Subscribers' list
 	std::unordered_map<TypeIndex, std::vector<BaseEventSubscriber*>, std::hash<TypeIndex>> subscribers;
+
+	std::unordered_map<std::type_index, System*> m_system_types; // <index_of_system_type, ptr_to_system_in_memory>
+	std::list<System*> m_systems; // system list
 };
 
 #endif //DREAMINENGINE_SCENE_H

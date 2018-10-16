@@ -11,6 +11,11 @@ namespace Events
 	};
 
 #pragma region All Events Data
+	struct OnProcessInputs
+	{
+		std::vector<InputEnum> inputs;
+	};
+
 	// Called when a new entity is created.
 	struct OnEntityCreated
 	{

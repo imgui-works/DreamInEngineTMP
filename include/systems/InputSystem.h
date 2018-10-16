@@ -1,18 +1,22 @@
 #ifndef DREAMINENGINE_INPUTSYSTEM_H
 #define DREAMINENGINE_INPUTSYSTEM_H
 
-#include "utils/InputEnum.h"
-#include <vector>
-#include "utils/ComponentStore.h"
-#include "components/Sprite.h"
-#include "components/Input.h"
+#include "System.h"
 
-class InputSystem {
-private :
-
-
+class InputSystem : public System, public EventSubscriber<Events::OnProcessInputs> {
 public :
-	void update(std::vector<InputEnum> inputs, ComponentStore<Input> inputs_c, ComponentStore<Sprite> sprites);
+	InputSystem(Scene* scene);
+
+	void update() override;
+
+	void receive(Scene* scene, const Events::OnProcessInputs& event) override;
+
+	~InputSystem();
+
+private:
+	bool m_key_repeat;
+
+	std::vector<InputEnum> m_input_instructions;
 };
 
 

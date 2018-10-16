@@ -92,7 +92,13 @@ void SceneManager::run() const {
 
 		glfwPollEvents();
 
-		std::vector<InputEnum> inputs = m_glfw_environment->process_input(); // Order ??
+		// TODO: Refactor those 3 lines ?
+		Events::OnProcessInputs event_process_input;
+		event_process_input.inputs = m_glfw_environment->process_input();
+		if (!event_process_input.inputs.empty()) // inputs detected
+		{
+			m_active_scene->emit<Events::OnProcessInputs>(event_process_input);
+		}
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -133,7 +139,7 @@ void SceneManager::run() const {
 		if (m_active_scene) // Selected scene
 		{
 			if (RUNNING == m_runningConfigEnum) {
-				m_active_scene->update(inputs);
+				m_active_scene->update();
 			}
 
 			// TODO: Test MultiRendering from different views/(<=>viewports)/perspectives

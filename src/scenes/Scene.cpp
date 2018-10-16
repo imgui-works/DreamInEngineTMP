@@ -2,19 +2,35 @@
 // Created by ThomasBI on 30/01/2018.
 //
 
+// TODO: see if it works properly.. (testing ?)
+#include <systems/System.h>
+
 #include <scenes/Scene.h>
 #include <scenes/SceneManager.h>
+#include <utility>
+#include "systems/BoxPhysicsSystem.h"
+#include "systems/InputSystem.h"
 
-Scene::Scene(SceneManager *sceneManager, const std::string &sceneName) : m_sceneManager(sceneManager),
-m_name(sceneName),
-m_box_physics_system(), m_input_system(),
-m_sprites(), m_box_physique(), m_inputs(), m_entities() {
+Scene::Scene(SceneManager *sceneManager, std::string sceneName) : m_sceneManager(sceneManager), m_name(
+	                                                                  std::move(sceneName)) {
 	m_world = new b2World(b2Vec2(0.0, 9.81));
+	add_system<BoxPhysicsSystem>();
+	add_system<InputSystem>();
 }
 
-void Scene::update(std::vector<InputEnum> inputs) {
-	m_box_physics_system.update(m_box_physique, m_sprites);
-	m_input_system.update(inputs, m_inputs, m_sprites);
+// TODO: solve inputs case (it is actually broken on purpose)
+void Scene::update() {
+	static int o = 0;
+	for(auto &system : m_systems)
+	{
+		// @TEST: MODIFY BY REFERENCE a System's value !
+		get_system<BoxPhysicsSystem>()->i = ++o;
+
+		system->update();
+	}
+
+	// @TEST: System is modified by reference (and not by value !!)
+
 	// TODO: put "timeStep=1.0f/60.0f" to fit the 60FPS refresh rate => realistic simulation
 	m_world->Step(1.0 / 60.0, 8, 3);
 }
@@ -49,4 +65,44 @@ void Scene::add_box_physics(Entity *entity, int x, int y, int w, int h, bool dyn
 void Scene::add_input(Entity *entity) {
 	m_inputs.add(new Input(), entity->id);
 }
+
+void Scene::setName(std::string name)
+{
+	m_name = name;
+}
+
+std::string Scene::getName() const
+{
+	return m_name;
+}
+
+b2World* Scene::getWorld() const
+{
+	return m_world;
+}
+
+ComponentStore<Entity>& Scene::getEntities()
+{
+	return m_entities;
+}
+
+ComponentStore<Sprite>& Scene::getSprites()
+{
+	return m_sprites;
+}
+
+ComponentStore<BoxPhysics>& Scene::getBoxPhysics()
+{
+	return m_box_physique;
+}
+
+ComponentStore<Input>& Scene::getInputs()
+{
+	return m_inputs;
+}
+
+//std::vector<InputEnum>& Scene::get_input_enums()
+//{
+//	return ...
+//}
 

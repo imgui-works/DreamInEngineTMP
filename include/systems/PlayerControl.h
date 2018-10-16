@@ -7,8 +7,11 @@
 
 #include <systems/System.h>
 
-class PlayerControl : System {
+class PlayerControl : public System
+{
+	PlayerControl(Scene* scene);
 
+	void update() override;
 };
 
 #endif //DREAMINENGINE_PLAYERCONTROL_H
