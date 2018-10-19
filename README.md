@@ -1,5 +1,6 @@
 # DreamInEngine
-DreamInEngine is, from the very beginning, a 2D game maker made in C++ with OpenGL, ImGUI and Box2D.
+Since the very beginning of this project, DreamInEngine is designed to 
+be a 2D game maker made in C++ with OpenGL, ImGUI and Box2D.
 It also respect an ECS design for maximum performance and flexibility.
 
 The engine is made by myself and by Thomas Bisson, another student from my school (https://github.com/ThomasBisson)
