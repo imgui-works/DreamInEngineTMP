@@ -14,8 +14,13 @@
 Scene::Scene(SceneManager *sceneManager, std::string sceneName) : m_sceneManager(sceneManager), m_name(
 	                                                                  std::move(sceneName)) {
 	m_world = new b2World(b2Vec2(0.0, 9.81));
-	add_system<BoxPhysicsSystem>();
-	add_system<InputSystem>();
+	add_system<BoxPhysicsSystem>(COMPONENT_SPRITE | COMPONENT_BOX2DPHYSICS);
+	add_system<InputSystem>(COMPONENT_SPRITE | COMPONENT_INPUT);
+
+	//// @TEST: system mask well deserved & accessed through inheritance
+	/*get_system<InputSystem>()->Mask;
+	printf("Bs = %d\n", get_system<BoxPhysicsSystem>()->Mask);
+	printf("Is = %d\n", get_system<InputSystem>()->Mask);*/
 }
 
 // TODO: solve inputs case (it is actually broken on purpose)
@@ -50,6 +55,18 @@ Scene::~Scene() {
 	m_box_physique.kill();
 	delete m_world;
 	delete m_sceneManager;
+}
+
+void Scene::match(unsigned int entity_id, unsigned int entity_mask)
+{
+	for (auto system : m_systems)
+	{
+		if ((entity_mask & system->Mask) == system->Mask)
+		{
+			system->Entities.emplace(entity_id);
+			printf("Entity with ID %d, registered to a system\n", entity_id);
+		}
+	}
 }
 
 void Scene::add_sprite(unsigned int entity_id, Sprite *sprite) {

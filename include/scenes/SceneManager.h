@@ -23,6 +23,7 @@
 #include <SpriteRenderer.h>
 
 #include <utils/RunningConfigEnum.h>
+#include "components/ComponentTypes.h"
 
 bool has_component(unsigned int entity_mask, unsigned int component_mask);
 class ImGuiHUD;
@@ -37,15 +38,6 @@ typedef enum
 	PROJECTION_NORMALIZED_CENTER_CENTER = 1, // Normalized, but textures have reverse coordinates
 	PROJECTION_CENTER_CENTER = 2, // No projection
 } ProjectionType;
-
-typedef enum : unsigned int
-{
-	COMPONENT_NONE = 0,
-	COMPONENT_SPRITE = 1 << 0,
-	COMPONENT_BOX2DPHYSICS = 1 << 1,
-	COMPONENT_INPUT = 1 << 2,
-	COMPONENT_TOTAL = 1 << 3,
-} ComponentType;
 
 typedef struct BooleanCustom
 {

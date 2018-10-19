@@ -220,6 +220,7 @@
   <ItemGroup>
     <ClInclude Include="dirent.h" />
     <ClInclude Include="include\components\BoxPhysics.h" />
+    <ClInclude Include="include\components\ComponentTypes.h" />
     <ClInclude Include="include\components\ContactListener.h" />
     <ClInclude Include="include\components\Input.h" />
     <ClInclude Include="include\components\Shader.h" />

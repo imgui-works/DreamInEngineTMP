@@ -469,6 +469,9 @@
     <ClInclude Include="include\utils\filesystem.h">
       <Filter>src\utils</Filter>
     </ClInclude>
+    <ClInclude Include="include\components\ComponentTypes.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

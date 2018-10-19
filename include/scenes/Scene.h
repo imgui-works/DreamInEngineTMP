@@ -18,6 +18,7 @@
 #include <utils/types.h>
 #include <events/Events.h>
 #include <events/EventSubscriber.h>
+#include <set>
 
 template<typename T>
 TypeIndex getTypeIndex()
@@ -134,7 +135,7 @@ public:
 	// TODO: Check if the specified type is derived from "System" (Base class)
 	/* System Management */
 	template<typename TSystem>
-	inline bool add_system()
+	inline bool add_system(unsigned int filter = 0)
 	{
 		// Find type index
 		const TypeIndex type_index_system = getTypeIndex<TSystem>();
@@ -156,8 +157,8 @@ public:
 
 		// System not exists => Create & Add system to system list
 		auto system = new TSystem(this);
+		system->Mask = filter; // TODO: add the requirement (mask) filter !?!
 
-		
 		m_systems.push_back(system);
 		m_system_types[type_index_system] = m_systems.back(); // TODO: see if a double pointer is useful and/or better or not for non-copying the object => VERY IMPORTANT: DO TESTS about this case !!!!!!!!
 		return true;
@@ -169,6 +170,19 @@ public:
 		// Find type index
 		return (TSystem*)m_system_types[getTypeIndex<TSystem>()];
 	}
+
+	// @return unsigned int : number of different systems matched ?
+	void match(unsigned int entity_id, unsigned int entity_mask);
+
+	// @TODO: Find a way to improve this method which will SLOW DOWN (A LOT) the program
+	/* Get all Matching Entities for a given system */
+	template<typename TSystem>
+	inline std::set<unsigned int>& matching_entities()
+	{
+		return ( (TSystem*)get_system<TSystem>())->Entities; // Get a system Set of entity matches
+	}
+
+	std::list<System*> m_systems; // system list
 
 private:
 	// Scene data
@@ -188,8 +202,10 @@ private:
 	// Subscribers' list
 	std::unordered_map<TypeIndex, std::vector<BaseEventSubscriber*>, std::hash<TypeIndex>> subscribers;
 
-	std::unordered_map<std::type_index, System*> m_system_types; // <index_of_system_type, ptr_to_system_in_memory>
-	std::list<System*> m_systems; // system list
+	// NOTE: this one below is an improvement..
+	//std::unordered_map<std::type_index, unsigned int> m_system_requirements; // System components/masks requirements (for entity matching)
+	//std::unordered_map<std::type_index, std::set<unsigned int>> m_matching_entities;
+	/* TODO: checkt this line, maybe it's useless now */ std::unordered_map<std::type_index, System*> m_system_types; // <index_of_system_type, ptr_to_system_in_memory>
 };
 
 #endif //DREAMINENGINE_SCENE_H

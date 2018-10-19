@@ -12,6 +12,8 @@
 #include <ResourceManager.h>
 #include <SpriteRenderer.h>
 
+#include <scenes/Scene.h>
+
 #include <utils/fps.h>
 #include <utility>
 
@@ -317,6 +319,8 @@ BooleanCustom SceneManager::add_component(unsigned int component_type, unsigned 
 		{
 			this->new_sprite(entity_id);
 			this->active_scene()->getEntities().get(entity_id)->mask |= component_type; // TODO: Simplify call or make a reference call
+																						// TODO: improve this ? -> Can be improved by matching only if component is added
+			this->active_scene()->match(entity_id, this->active_scene()->getEntities().get(entity_id)->mask);
 			return BooleanCustom(true, "Successfully added Sprite component");
 		}
 	}
@@ -337,6 +341,8 @@ BooleanCustom SceneManager::add_component(unsigned int component_type, unsigned 
 			// TODO: Thomas, you can solve the BoxPhysics no-param constructor here ;D
 			this->addBox2D(this->active_scene()->getEntities().get(entity_id), this->m_active_scene->getSprites().get(entity_id), true);
 			this->active_scene()->getEntities().get(entity_id)->mask |= component_type;
+			// TODO: improve this ? -> Can be improved by matching only if component is added
+			this->active_scene()->match(entity_id, this->active_scene()->getEntities().get(entity_id)->mask);
 			return BooleanCustom(true, "Successfully added BoxPhysics component");
 		}
 	}
@@ -354,6 +360,8 @@ BooleanCustom SceneManager::add_component(unsigned int component_type, unsigned 
 		{
 			this->addInput(this->active_scene()->getEntities().get(entity_id));
 			this->active_scene()->getEntities().get(entity_id)->mask |= component_type;
+			// TODO: improve this ? -> Can be improved by matching only if component is added
+			this->active_scene()->match(entity_id, this->active_scene()->getEntities().get(entity_id)->mask);
 			return BooleanCustom(true, "Successfully added Input component");
 		}
 	}
