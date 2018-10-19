@@ -174,6 +174,8 @@ public:
 	// @return unsigned int : number of different systems matched ?
 	void match(unsigned int entity_id, unsigned int entity_mask);
 
+	void unmatch(unsigned int entity_id, unsigned int entity_mask);
+
 	// @TODO: Find a way to improve this method which will SLOW DOWN (A LOT) the program
 	/* Get all Matching Entities for a given system */
 	template<typename TSystem>

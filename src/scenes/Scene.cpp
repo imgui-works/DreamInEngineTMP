@@ -48,7 +48,7 @@ void Scene::render() {
 }
 
 Scene::~Scene() {
-	for (int i = 0; i < m_box_physique.getVector().size(); i++) {
+	for (unsigned int i = 0; i < m_box_physique.getVector().size(); i++) {
 		m_world->DestroyBody(m_box_physique.getVector()[i]->getBody());
 	}
 	m_sprites.kill();
@@ -65,6 +65,19 @@ void Scene::match(unsigned int entity_id, unsigned int entity_mask)
 		{
 			system->Entities.emplace(entity_id);
 			printf("Entity with ID %d, registered to a system\n", entity_id);
+		}
+	}
+}
+
+// IMPORTANT: Unmatch the entity components BEFORE doing any entity_mask modifications !
+void Scene::unmatch(unsigned entity_id, unsigned entity_mask)
+{
+	for (auto system : m_systems)
+	{
+		if ((entity_mask & system->Mask) == system->Mask)
+		{
+			system->Entities.erase(entity_id);
+			printf("Entity with ID %d, UNregistered from a system\n", entity_id);
 		}
 	}
 }

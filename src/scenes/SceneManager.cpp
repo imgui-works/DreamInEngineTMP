@@ -413,13 +413,19 @@ bool SceneManager::remove_components(unsigned int id)
 
 bool SceneManager::remove_component(unsigned int id, unsigned int component)
 {
+	// TODO: Should remove this ??
+	unsigned int entity_mask = m_active_scene->getEntities().get(id)->mask;
+
 	if (component == COMPONENT_SPRITE) {
+		m_active_scene->unmatch(id, entity_mask);
 		m_active_scene->getSprites().remove(id);
 	}
 	else if (component == COMPONENT_INPUT) {
+		m_active_scene->unmatch(id, entity_mask);
 		this->m_active_scene->getInputs().remove(id);
 	}
 	else if (component == COMPONENT_BOX2DPHYSICS) {
+		m_active_scene->unmatch(id, entity_mask);
 		this->m_active_scene->getBoxPhysics().remove(id);
 	}
 	else {
