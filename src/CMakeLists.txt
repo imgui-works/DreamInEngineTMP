@@ -24,7 +24,7 @@ add_library(core
 add_subdirectory(components)
 add_subdirectory(entities)
 add_subdirectory(events)
-add_subdirectory(HUD)
+#add_subdirectory(HUD)
 add_subdirectory(scenes)
 add_subdirectory(systems)
 add_subdirectory(utils)
@@ -38,8 +38,6 @@ file(GLOB eh ${CMAKE_CURRENT_SOURCE_DIR}/entities/*.h)
 file(GLOB es ${CMAKE_CURRENT_SOURCE_DIR}/entities/*.cpp)
 file(GLOB evh ${CMAKE_CURRENT_SOURCE_DIR}/events/*.h)
 file(GLOB evs ${CMAKE_CURRENT_SOURCE_DIR}/events/*.cpp)
-#file(GLOB hudh ${CMAKE_CURRENT_SOURCE_DIR}/HUD/*.h)
-#file(GLOB huds ${CMAKE_CURRENT_SOURCE_DIR}/HUD/*.cpp)
 file(GLOB sh ${CMAKE_CURRENT_SOURCE_DIR}/scenes/*.h)
 file(GLOB ss ${CMAKE_CURRENT_SOURCE_DIR}/scenes/*.cpp)
 file(GLOB syh ${CMAKE_CURRENT_SOURCE_DIR}/systems/*.h)
@@ -47,7 +45,7 @@ file(GLOB sys ${CMAKE_CURRENT_SOURCE_DIR}/systems/*.cpp)
 file(GLOB uh ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.h)
 file(GLOB us ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cpp)
 
-add_executable(DreamInEngine mainX.cpp ${PROJECT_SOURCE_DIR}/deps/externals/soil/include/soil/soil.h GLFWEnvironment.h GLFWEnvironment.cpp ResourceManager.h ResourceManager.cpp SpriteRenderer.h SpriteRenderer.cpp ${ch} ${cs} ${eh} ${es} ${evh} ${evs} ${hudh} ${huds} ${sh} ${ss} ${syh} ${sys} ${uh} ${us})
+add_executable(DreamInEngine mainX.cpp ${PROJECT_SOURCE_DIR}/deps/externals/soil/include/soil/soil.h GLFWEnvironment.h GLFWEnvironment.cpp ResourceManager.h ResourceManager.cpp SpriteRenderer.h SpriteRenderer.cpp ${ch} ${cs} ${eh} ${es} ${evh} ${evs} ${sh} ${ss} ${syh} ${sys} ${uh} ${us})
 
 # TODO: create an ECS lib
 # TODO: link the ECS lib ??
