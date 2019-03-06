@@ -163,7 +163,7 @@ int GLFWEnvironment::init() {
 	// TODO : Loading those images should be the responsibility of the ResourceManager
 	// Window icon & minified icon
 	GLFWimage icon[2];
-	stbi_set_flip_vertically_on_load(true);
+	//stbi_set_flip_vertically_on_load(true);
 	icon[0].pixels = stbi_load("..\\assets\\textures\\pokeball_200px.png", &icon[0].width, &icon[0].height, nullptr, STBI_rgb_alpha);
 	icon[1].pixels = stbi_load("..\\assets\\textures\\container.jpg", &icon[1].width, &icon[1].height, nullptr, STBI_rgb_alpha);
 	glfwSetWindowIcon(glfwGetCurrentContext(), 2, icon);

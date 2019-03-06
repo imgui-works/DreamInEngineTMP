@@ -28,7 +28,7 @@
 #include <GLFW/glfw3.h>
 
 #include <experimental/filesystem>
-#include "ImGui/imgui.h"
+#include "imgui/imgui.h"
 #include "HUD/popups.h"
 namespace fs = std::experimental::filesystem;
 
