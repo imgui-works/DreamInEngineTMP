@@ -1,0 +1,8 @@
+project(HUD)
+
+file(GLOB HUD_HEADERS ${CMAKE_CURRENT_SOURCE_DIR})
+file(GLOB HUD_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+
+add_library(${PROJECT_NAME} STATIC ${HUD_SOURCES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${HUD_HEADERS})

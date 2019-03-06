@@ -3,3 +3,14 @@
 //
 
 #include <systems/PlayerControl.h>
+
+PlayerControl::PlayerControl(Scene* scene) : System(scene)
+{
+	
+}
+
+
+void PlayerControl::update()
+{
+
+}

@@ -1,0 +1,10 @@
+project(scenes)
+
+file(GLOB SCENES_HEADERS ${CMAKE_CURRENT_SOURCE_DIR})
+file(GLOB SCENES_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+
+add_library(${PROJECT_NAME} STATIC ${SCENES_SOURCES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${SCENES_HEADERS})
+
+target_link_libraries(${PROJECT_NAME} PUBLIC Box2D)

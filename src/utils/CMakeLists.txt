@@ -1,0 +1,8 @@
+project(utils)
+
+file(GLOB UTILS_HEADERS ${CMAKE_CURRENT_SOURCE_DIR})
+file(GLOB UTILS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+
+add_library(${PROJECT_NAME} STATIC ${UTILS_SOURCES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${UTILS_HEADERS})

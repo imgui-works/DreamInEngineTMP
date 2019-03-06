@@ -4,7 +4,7 @@
 
 #include <HUD/ImGuiHUD.h>
 
-#include <GLEW/glew.h>
+#include <glad/glad.h>
 #include <GLFWEnvironment.h>
 #include <GLFW/glfw3.h>
 
@@ -12,8 +12,12 @@
 #include <ResourceManager.h>
 #include <SpriteRenderer.h>
 
+#include <scenes/Scene.h>
+
 #include <utils/fps.h>
 #include <utility>
+#include "systems/InputSystem.h"
+#include "systems/PlayerControl.h"
 
 #define IDENTITY_MATRICE 1.0f
 
@@ -74,6 +78,8 @@ bool SceneManager::init() {
 
 	// [CRITICAL] TODO: solve the case where a component (ex: Sprite) can't be updated (Position/Rotation/etc..) while having an attached Box2D collider
 
+
+
 	return success;
 }
 
@@ -92,7 +98,13 @@ void SceneManager::run() const {
 
 		glfwPollEvents();
 
-		std::vector<InputEnum> inputs = m_glfw_environment->process_input(); // Order ??
+		// TODO: Refactor those 3 lines ?
+		Events::OnProcessInputs event_process_input;
+		event_process_input.inputs = m_glfw_environment->process_input();
+		if (!event_process_input.inputs.empty()) // inputs detected
+		{
+			m_active_scene->emit<Events::OnProcessInputs>(event_process_input);
+		}
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -133,7 +145,7 @@ void SceneManager::run() const {
 		if (m_active_scene) // Selected scene
 		{
 			if (RUNNING == m_runningConfigEnum) {
-				m_active_scene->update(inputs);
+				m_active_scene->update();
 			}
 
 			// TODO: Test MultiRendering from different views/(<=>viewports)/perspectives
@@ -311,6 +323,8 @@ BooleanCustom SceneManager::add_component(unsigned int component_type, unsigned 
 		{
 			this->new_sprite(entity_id);
 			this->active_scene()->getEntities().get(entity_id)->mask |= component_type; // TODO: Simplify call or make a reference call
+																						// TODO: improve this ? -> Can be improved by matching only if component is added
+			this->active_scene()->match(entity_id, this->active_scene()->getEntities().get(entity_id)->mask);
 			return BooleanCustom(true, "Successfully added Sprite component");
 		}
 	}
@@ -331,6 +345,8 @@ BooleanCustom SceneManager::add_component(unsigned int component_type, unsigned 
 			// TODO: Thomas, you can solve the BoxPhysics no-param constructor here ;D
 			this->addBox2D(this->active_scene()->getEntities().get(entity_id), this->m_active_scene->getSprites().get(entity_id), true);
 			this->active_scene()->getEntities().get(entity_id)->mask |= component_type;
+			// TODO: improve this ? -> Can be improved by matching only if component is added
+			this->active_scene()->match(entity_id, this->active_scene()->getEntities().get(entity_id)->mask);
 			return BooleanCustom(true, "Successfully added BoxPhysics component");
 		}
 	}
@@ -348,6 +364,8 @@ BooleanCustom SceneManager::add_component(unsigned int component_type, unsigned 
 		{
 			this->addInput(this->active_scene()->getEntities().get(entity_id));
 			this->active_scene()->getEntities().get(entity_id)->mask |= component_type;
+			// TODO: improve this ? -> Can be improved by matching only if component is added
+			this->active_scene()->match(entity_id, this->active_scene()->getEntities().get(entity_id)->mask);
 			return BooleanCustom(true, "Successfully added Input component");
 		}
 	}
@@ -399,13 +417,19 @@ bool SceneManager::remove_components(unsigned int id)
 
 bool SceneManager::remove_component(unsigned int id, unsigned int component)
 {
+	// TODO: Should remove this ??
+	unsigned int entity_mask = m_active_scene->getEntities().get(id)->mask;
+
 	if (component == COMPONENT_SPRITE) {
+		m_active_scene->unmatch(id, entity_mask);
 		m_active_scene->getSprites().remove(id);
 	}
 	else if (component == COMPONENT_INPUT) {
+		m_active_scene->unmatch(id, entity_mask);
 		this->m_active_scene->getInputs().remove(id);
 	}
 	else if (component == COMPONENT_BOX2DPHYSICS) {
+		m_active_scene->unmatch(id, entity_mask);
 		this->m_active_scene->getBoxPhysics().remove(id);
 	}
 	else {

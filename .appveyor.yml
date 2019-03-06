@@ -1,0 +1,18 @@
+os: Visual Studio 2017
+platform: x64
+
+test: off
+
+#
+# Build
+#
+build_script:
+  #
+  # Visual Studio (MSBuild)
+  #
+  - mkdir build_msbuild
+  - cd build_msbuild
+  - cmake -DENABLE_COVERAGE=1 -DONLINE_TESTING=1 -G "Visual Studio 15 2017 Win64" ..
+  - msbuild DreamInEngine.sln
+  - ctest -C Debug --extra-verbose -j 4
+  - cd ..

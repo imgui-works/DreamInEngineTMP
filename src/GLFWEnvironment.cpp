@@ -2,10 +2,10 @@
 // Created by ValentinDU on 20/02/2018.
 //
 
-#include "GLFWEnvironment.h"
-#include <GLEW/glew.h>
+#include <GLFWEnvironment.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <SOIL.h>
+#include <stb/stb_image.h>
 
 int window_position_x = 0; // from TOP LEFT of user's screen
 int window_position_y = 0; // from TOP LEFT of user's screen
@@ -135,8 +135,17 @@ int GLFWEnvironment::init() {
 
 	glfwMakeContextCurrent(m_window);
 
+	// Call GL Loader
+	gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+
 	// Enable Vsync
 	glfwSwapInterval(1);
+
+	// Load OpenGL with GLad's GL Loader
+	if (!gladLoadGL()) {
+		printf("Something went wrong!\n");
+		return -1;
+	}
 
 	// Register callback functions
 	glfwSetFramebufferSizeCallback(glfwGetCurrentContext(), framebuffer_size_callback); // frame size
@@ -154,10 +163,11 @@ int GLFWEnvironment::init() {
 	// TODO : Loading those images should be the responsibility of the ResourceManager
 	// Window icon & minified icon
 	GLFWimage icon[2];
-	icon[0].pixels = SOIL_load_image("resources/textures/pokeball_200px.png", &icon[0].width, &icon[0].height, nullptr, SOIL_LOAD_RGBA);
-	icon[1].pixels = SOIL_load_image("resources/textures/container.jpg", &icon[1].width, &icon[1].height, nullptr, SOIL_LOAD_RGBA);
+	stbi_set_flip_vertically_on_load(true);
+	icon[0].pixels = stbi_load("..\\assets\\textures\\pokeball_200px.png", &icon[0].width, &icon[0].height, nullptr, STBI_rgb_alpha);
+	icon[1].pixels = stbi_load("..\\assets\\textures\\container.jpg", &icon[1].width, &icon[1].height, nullptr, STBI_rgb_alpha);
 	glfwSetWindowIcon(glfwGetCurrentContext(), 2, icon);
-	SOIL_free_image_data(icon[0].pixels);
+    stbi_image_free(icon[0].pixels);
 
 	// Immediatly maximize window => fit the screen
 	glfwMaximizeWindow(glfwGetCurrentContext());

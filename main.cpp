@@ -72,9 +72,10 @@ public:
 		{
 			throw std::runtime_error("glewInit failed");
 		}
+		// Blending
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+		// Smoother textures
 		glEnable(GL_SMOOTH);
 
 		// Load shaders & count
@@ -100,10 +101,10 @@ public:
 };
 
 int main() {
-	Engine *DreamInEngine = new Engine();
+	auto DreamInEngine = new Engine();
 	DreamInEngine->Start();
 
-	delete DreamInEngine;DreamInEngine = nullptr;
+	delete DreamInEngine; DreamInEngine = nullptr;
 
-	return (int)DreamInEngine;
+	return (unsigned int)DreamInEngine;
 }
