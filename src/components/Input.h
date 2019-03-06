@@ -1,7 +1,7 @@
 #ifndef DREAMINENGINE_INPUT_H
 #define DREAMINENGINE_INPUT_H
 
-#include "utils/InputEnum.h"
+#include <utils/InputEnum.h>
 
 
 class Input {

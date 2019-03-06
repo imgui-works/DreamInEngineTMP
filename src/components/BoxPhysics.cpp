@@ -3,7 +3,7 @@
 //
 
 #include <Box2D/Dynamics/b2Body.h>
-#include "components/BoxPhysics.h"
+#include "BoxPhysics.h"
 #include <iostream>
 
 b2Body* BoxPhysics::addRec(b2World *world, int x, int y, int w, int h, bool dyn)

@@ -1,4 +1,4 @@
-#include "components/Shader.h"
+#include "Shader.h"
 #include <iostream>
 
 Shader &Shader::Use()
