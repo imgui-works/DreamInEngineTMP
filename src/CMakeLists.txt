@@ -38,8 +38,8 @@ file(GLOB eh ${CMAKE_CURRENT_SOURCE_DIR}/entities/*.h)
 file(GLOB es ${CMAKE_CURRENT_SOURCE_DIR}/entities/*.cpp)
 file(GLOB evh ${CMAKE_CURRENT_SOURCE_DIR}/events/*.h)
 file(GLOB evs ${CMAKE_CURRENT_SOURCE_DIR}/events/*.cpp)
-file(GLOB hudh ${CMAKE_CURRENT_SOURCE_DIR}/HUD/*.h)
-file(GLOB huds ${CMAKE_CURRENT_SOURCE_DIR}/HUD/*.cpp)
+#file(GLOB hudh ${CMAKE_CURRENT_SOURCE_DIR}/HUD/*.h)
+#file(GLOB huds ${CMAKE_CURRENT_SOURCE_DIR}/HUD/*.cpp)
 file(GLOB sh ${CMAKE_CURRENT_SOURCE_DIR}/scenes/*.h)
 file(GLOB ss ${CMAKE_CURRENT_SOURCE_DIR}/scenes/*.cpp)
 file(GLOB syh ${CMAKE_CURRENT_SOURCE_DIR}/systems/*.h)
@@ -55,7 +55,7 @@ add_executable(DreamInEngine mainX.cpp ${PROJECT_SOURCE_DIR}/deps/externals/soil
 # TODO:
 
 #target_link_libraries(DreamInEngine PRIVATE project_src_lib scenes systems HUD core events components entities utils imgui glfw ${GLFW_LIBRARIES} glad ${GLAD_LIBRARIES} glm stb Box2D soil -lstdc++fs)
-target_link_libraries(DreamInEngine PRIVATE project_src_lib core imgui soil glfw ${GLFW_LIBRARIES} glad ${GLAD_LIBRARIES} glm stb Box2D opengl32 -lstdc++fs)
+target_link_libraries(DreamInEngine PRIVATE project_src_lib core soil glfw ${GLFW_LIBRARIES} glad ${GLAD_LIBRARIES} glm stb Box2D -lstdc++fs)
 
 if (MSVC)
     target_compile_definitions(DreamInEngine PRIVATE mainX=main MSVC_PLATFORM)
