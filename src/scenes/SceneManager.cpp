@@ -2,7 +2,7 @@
 // Created by Thomas Bisson and Valentin Dumas on 30/01/2018.
 //
 
-#include <HUD/ImGuiHUD.h>
+//#include <HUD/ImGuiHUD.h>
 
 #include <glad/glad.h>
 #include <GLFWEnvironment.h>
@@ -25,8 +25,8 @@ static int ID = 0;
 
 SceneManager::SceneManager(GLFWEnvironment *glfw_environment) {
 	m_glfw_environment = glfw_environment;
-	m_ImGui_HUD = new ImGuiHUD(*this, glfw_environment, true);
-	m_ImGui_HUD->init();
+//	m_ImGui_HUD = new ImGuiHUD(*this, glfw_environment, true);
+//	m_ImGui_HUD->init();
 
 	m_active_scene = nullptr;
 
@@ -66,12 +66,12 @@ bool SceneManager::init() {
 	this->add_component(COMPONENT_BOX2DPHYSICS, 0);
 
 	// Face (Entity ID: 1)
-	this->get_component<Sprite>(COMPONENT_SPRITE, 1)->Texture = ResourceManager::GetTexture("face");
+	this->get_component<Sprite>(COMPONENT_SPRITE, 1)->texture = ResourceManager::GetTexture("face");
 	this->get_component<Sprite>(COMPONENT_SPRITE, 1)->Position = glm::vec2(50.0, 300.0f);
 	this->add_component(COMPONENT_INPUT, 1);
 
 	// Pokeball (Entity ID: 2)
-	this->get_component<Sprite>(COMPONENT_SPRITE, 2)->Texture = ResourceManager::GetTexture("pokeball");
+	this->get_component<Sprite>(COMPONENT_SPRITE, 2)->texture = ResourceManager::GetTexture("pokeball");
 	this->get_component<Sprite>(COMPONENT_SPRITE, 2)->Position = glm::vec2(50.0, 500.0f);
 
 	//this->get_components(0); // entity 0's component mask
@@ -113,10 +113,10 @@ void SceneManager::run() const {
 		// TODO: Create window explorer at the bottom of the screen
 		// TODO: Add window explorer to viewport's height calculation(s)
 		// [IMPORTANT WARNING]: Viewport & Scissor have their ORIGIN (0;0) to LOWER LEFT ! 
-		int x = m_ImGui_HUD->m_window_scene.w; // + (m_ImGui_HUD->m_window_scene.x); This one is for responsive design
-		int y = m_ImGui_HUD->m_window_explorer.h + (m_glfw_environment->get_height() * 0.030f); // optional, only to have square textures
-		unsigned int width = m_ImGui_HUD->m_window_entity.x - x; // NOTE: Not very reliable..
-		unsigned int height = (m_glfw_environment->get_height() - m_ImGui_HUD->m_window_explorer.h) - m_ImGui_HUD->m_window_menubar.h - (m_glfw_environment->get_height() * 0.060f); // *0.035f to have square textures
+//		int x = m_ImGui_HUD->m_window_scene.w; // + (m_ImGui_HUD->m_window_scene.x); This one is for responsive design
+//		int y = m_ImGui_HUD->m_window_explorer.h + (m_glfw_environment->get_height() * 0.030f); // optional, only to have square textures
+//		unsigned int width = m_ImGui_HUD->m_window_entity.x - x; // NOTE: Not very reliable..
+//		unsigned int height = (m_glfw_environment->get_height() - m_ImGui_HUD->m_window_explorer.h) - m_ImGui_HUD->m_window_menubar.h - (m_glfw_environment->get_height() * 0.060f); // *0.035f to have square textures
 
 		// TODO: Improve OpenGL render scene frame (responsiveness);
 		// Hmax = Lmax * (Rhauteur / Rlargeur); = width * (1080 / 1920);
@@ -125,8 +125,8 @@ void SceneManager::run() const {
 
 		// NOTE: (Re)Define the zone where OpenGL can Draw/Render things
 		glEnable(GL_SCISSOR_TEST);
-		glScissor(x, y, width, height); // Redefine the OpenGL's drawable zone
-		glViewport(x, y, width, height);
+//		glScissor(x, y, width, height); // Redefine the OpenGL's drawable zone
+//		glViewport(x, y, width, height);
 		glClearColor(0.6f, 0.6f, 0.6f, 1.0f); // Clear only the defined zone
 		glClear(GL_COLOR_BUFFER_BIT);
 		glDisable(GL_SCISSOR_TEST);
@@ -140,7 +140,7 @@ void SceneManager::run() const {
 
 		//glEnd();
 
-		m_ImGui_HUD->update();
+		//m_ImGui_HUD->update();
 
 		if (m_active_scene) // Selected scene
 		{
@@ -155,7 +155,7 @@ void SceneManager::run() const {
 		{
 		}
 
-		m_ImGui_HUD->render();
+		//m_ImGui_HUD->render();
 
 		// TODO: From GLFW ?
 		glfwSwapBuffers(m_glfw_environment->get_window());
@@ -165,7 +165,7 @@ void SceneManager::run() const {
 	}
 
 	// Cleanup
-	m_ImGui_HUD->close();
+	//m_ImGui_HUD->close();
 	m_glfw_environment->close();
 }
 
@@ -259,7 +259,7 @@ void SceneManager::update_sprite(Sprite *sprite) {
 
 void SceneManager::render_sprite(Sprite *sprite) {
 	// TODO: Do mirror towards X-axis too...  => Make a struct to store the Axis
-	spriteRenderer->DrawSprite(sprite->Texture, sprite->Position, sprite->Size, sprite->Rotation, sprite->Color, GL_FALSE);
+	spriteRenderer->DrawSprite(sprite->texture, sprite->Position, sprite->Size, sprite->Rotation, sprite->Color, GL_FALSE);
 }
 
 // TODO: move to another location
@@ -274,11 +274,11 @@ void SceneManager::addInput(Entity *entity) {
 
 //@TODO: see if there is no memory leaks => Do Tests
 SceneManager::~SceneManager() {
-	delete m_ImGui_HUD;
+	// delete m_ImGui_HUD;
 	delete m_glfw_environment;
 	delete spriteRenderer;
 
-	m_ImGui_HUD = nullptr;
+//	m_ImGui_HUD = nullptr;
 	m_glfw_environment = nullptr;
 	spriteRenderer = nullptr;
 

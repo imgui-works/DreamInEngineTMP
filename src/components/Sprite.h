@@ -10,10 +10,10 @@ class Sprite
 {
 public:
 	// TODO: uglyyyyy !
-	Sprite(Texture texture, glm::vec2 position, glm::vec2 size = glm::vec2(32.0f, 32.0f), GLfloat rotation = 0.0f, glm::vec3 color = glm::vec3(1.0f))
-		: Texture(texture), Position(position), Size(size), Rotation(rotation), Color(color) {}
+	Sprite(Texture tex, glm::vec2 position, glm::vec2 size = glm::vec2(32.0f, 32.0f), GLfloat rotation = 0.0f, glm::vec3 color = glm::vec3(1.0f))
+		: texture(tex), Position(position), Size(size), Rotation(rotation), Color(color) {}
 
-	Texture Texture;
+	Texture texture;
 
 	glm::vec2 Position, Size; // Scale ?
 

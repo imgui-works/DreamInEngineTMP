@@ -790,7 +790,7 @@ void ImGuiHUD::update() {
 				{
 					ImGui::BeginGroup();
 					{
-						ImGui::ImageButton((void*)(intptr_t)m_scene_manager.active_scene()->getSprites().get(entitySelected)->Texture.ID, ImVec2(64.0f, 64.0f));
+						ImGui::ImageButton((void*)(intptr_t)m_scene_manager.active_scene()->getSprites().get(entitySelected)->texture.ID, ImVec2(64.0f, 64.0f));
 						if (ImGui::BeginDragDropTarget())
 						{
 							if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAG_N_DROP_TEXTURES"))
@@ -818,7 +818,7 @@ void ImGuiHUD::update() {
 
 				if (drag_texture)
 				{
-					m_scene_manager.active_scene()->getSprites().get(entitySelected)->Texture = ResourceManager::GetTexture(payload_n);
+					m_scene_manager.active_scene()->getSprites().get(entitySelected)->texture = ResourceManager::GetTexture(payload_n);
 					drag_texture = false;
 				}
 			} // ./ Sprite Component (details)
@@ -1001,7 +1001,7 @@ void ImGuiHUD::update() {
 							if (button_pressed)
 							{
 								// Selected entity takes the selected Texture
-								m_scene_manager.active_scene()->getSprites().get(/*m_scene_manager.active_scene()->getEntities()[*/entitySelected/*].id*/)->Texture = ResourceManager::GetTexture(texture_name);
+								m_scene_manager.active_scene()->getSprites().get(/*m_scene_manager.active_scene()->getEntities()[*/entitySelected/*].id*/)->texture = ResourceManager::GetTexture(texture_name);
 							}
 						}
 					}

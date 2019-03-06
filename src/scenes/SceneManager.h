@@ -26,7 +26,7 @@
 #include "components/ComponentTypes.h"
 
 bool has_component(unsigned int entity_mask, unsigned int component_mask);
-class ImGuiHUD;
+//class ImGuiHUD;
 
 class SpriteRenderer;
 
@@ -52,7 +52,7 @@ class SceneManager {
 private:
 	/* Environments, Texture & Shader Loaders */
 	GLFWEnvironment * m_glfw_environment;
-	ImGuiHUD *m_ImGui_HUD;
+//	ImGuiHUD *m_ImGui_HUD;
 
 	/* Locations & Matrices */
 	Scene *m_active_scene;
